@@ -1,0 +1,1 @@
+# SSM for IntelliJ Idea
