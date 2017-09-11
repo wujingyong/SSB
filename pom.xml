@@ -117,4 +117,55 @@
         </dependency>
 
     </dependencies>
+         
+    <profiles>
+        <profile>
+            <id>local</id>
+            <properties>
+                <package.enviroment></package.enviroment>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <package.enviroment>test</package.enviroment>
+            </properties>
+        </profile>
+    </profiles>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <!-- 除去不同环境的文件 -->
+                <excludes>
+                    <exclude>test/*</exclude>
+                </excludes>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <addMavenDescriptor>false</addMavenDescriptor>
+                    </archive>
+                    <webResources>
+                        <webResource>
+                            <!-- 需要替换的文件所在的文件夹 -->
+                            <directory>src/main/resources/${package.enviroment}</directory>
+                            <!-- 文件所在的直接路径（打包后的） -->
+                            <targetPath>WEB-INF/classes</targetPath>
+                            <filtering>true</filtering>
+                        </webResource>
+                    </webResources>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
